@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer type="module"></script>
+    <script src="js/Persona.js" defer type="module"></script>
+    <script src="js/Cliente.js" defer type="module"></script>
+    <title>Segundo Parcial</title>
+</head>
+
+<body>
+
+    <div id="container">
+        <div id="listado">  
+            <table id="tabla" class="grilla">
+            	<thead id='tHead'>
+	                <tr id=cabecera>
+	                    <th id="colNom">Nombre</th>
+	                    <th id="colApe">Apellido</th>
+	                    <th id="colSex">Sexo</th>
+	                    <th id="colEdad">Edad</th>
+	                </tr>
+           		 </thead>
+            </table>
+        </div>
+
+        <div id="formulario">
+            <br />
+            <label for="">ID:</label>
+            <input class="inputs" type="text" id="txtId" disabled/>
+            <label for="">Nombre:</label>
+            <input class="inputs" type="text" id="txtNombre" />
+            <label for="">Apellido:</label>
+            <input class="inputs" type="text" id="txtApellido" value=""/>
+            <br />
+            <label for="">Sexo:</label>
+            <select id="sexo">
+                <option value="Male">Masculino</option>
+                <option value="Female">Femenino</option>
+            </select>
+            <br />
+            <label for="">Edad:</label> 
+            <input class="inputs" type="text" id="txtEdad" value=""/>
+            <button id="btnAgregar" value="">Agregar</button>
+            <button id="btnEliminar" value="">Eliminar</button>
+            <button id="btnLimpiar" value="">Limpiar</button>
+            <select name="filtros" id="filtros">
+                <option value="0" id="locDefault">Filtrar...</option>
+                <option value="Male">Masculino</option>
+                <option value="Female">Femenino</option>
+            </select>
+
+            <label for="">Promedio de edad:</label> 
+            <input type="text" id="promEdad" value=""/>
+            <button id="btnPromedio" value="">Promedio</button>
+            <br />
+             <br />
+            <label for="">Tildar los campos a mostrar:</label> 
+            <label><input type="checkbox" id="cboxNombre" checked="checked" value="cboxNombre">Nombre:</label>
+            <label><input type="checkbox" id="cboxApellido" checked="checked" value="cboxApellido">Apellido:</label>
+            <label><input type="checkbox" id="cboxEdad" checked="checked" value="cboxEdad">Edad:</label>
+            <label><input type="checkbox" id="cboxSexo" checked="checked" value="cboxSexo">Sexo:</label>
+
+        
+        </div>
+    </div>
+</body>
+
+</html>
