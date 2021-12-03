@@ -6,28 +6,4 @@ export default class Persona{
         this.apellido = p_apellido||"N/C";
     }
 
-    get id(){ 
-        return this.id;
-    }
-
-    set id(valor){
-        this.id = valor;
-    }
-
-    get nombre(){ 
-        return this.nombre;
-    }
-
-    set nombre(valor){
-        this.nombre = valor;
-    }
-
-    get apellido(){ 
-        return this.apellido;
-    }
-
-    set apellido(valor){
-        this.apellido = valor;
-    }
-
 }

@@ -15,18 +15,6 @@
 <body>
 
     <div id="container">
-        <div id="listado">  
-            <table id="tabla" class="grilla">
-            	<thead id='tHead'>
-	                <tr id=cabecera>
-	                    <th id="colNom">Nombre</th>
-	                    <th id="colApe">Apellido</th>
-	                    <th id="colSex">Sexo</th>
-	                    <th id="colEdad">Edad</th>
-	                </tr>
-           		 </thead>
-            </table>
-        </div>
 
         <div id="formulario">
             <br />
@@ -50,8 +38,8 @@
             <button id="btnLimpiar" value="">Limpiar</button>
             <select name="filtros" id="filtros">
                 <option value="0" id="locDefault">Filtrar...</option>
-                <option value="Male">Masculino</option>
-                <option value="Female">Femenino</option>
+                <option value="1">Masculino</option>
+                <option value="2">Femenino</option>
             </select>
 
             <label for="">Promedio de edad:</label> 
@@ -60,12 +48,13 @@
             <br />
              <br />
             <label for="">Tildar los campos a mostrar:</label> 
-            <label><input type="checkbox" id="cboxNombre" checked="checked" value="cboxNombre">Nombre:</label>
-            <label><input type="checkbox" id="cboxApellido" checked="checked" value="cboxApellido">Apellido:</label>
-            <label><input type="checkbox" id="cboxEdad" checked="checked" value="cboxEdad">Edad:</label>
-            <label><input type="checkbox" id="cboxSexo" checked="checked" value="cboxSexo">Sexo:</label>
+            <label><input type="checkbox" id="chk_nombre" checked="checked" value="cboxNombre">Nombre:</label>
+            <label><input type="checkbox" id="chk_apellido" checked="checked" value="cboxApellido">Apellido:</label>
+            <label><input type="checkbox" id="chk_edad" checked="checked" value="cboxEdad">Edad:</label>
+            <label><input type="checkbox" id="chk_sexo" checked="checked" value="cboxSexo">Sexo:</label>
 
-        
+            <div id="listado">  
+            </div>
         </div>
     </div>
 </body>

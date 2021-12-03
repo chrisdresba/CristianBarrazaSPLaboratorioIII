@@ -1,48 +1,121 @@
-
 function $(valorId) {
     return document.getElementById(valorId);
+}
+
+class Persona {
+
+    constructor(id, p_nombre, p_apellido) {
+        this.id = id || "N/C";
+        this.nombre = p_nombre || "N/C";
+        this.apellido = p_apellido || "N/C";
+    }
+}
+
+class Cliente extends Persona {
+
+    constructor(id, nombre, apellido, sexo, edad) {
+        super(id, nombre, apellido);
+        this.sexo = sexo || "N/C";
+        this.edad = edad || "N/C";
+    }
 }
 
 //Variables
 let personas;
 
 
-function construirTabla(persona) {
+function CargarTabla(personas) {
 
+    removerListado($("listado"));
     let tabla = $("tabla");
 
-    let fila = document.createElement("tr");
-    fila.setAttribute("id", persona.id);
-    fila.setAttribute("class", "nombre");
-    let celda = document.createElement("td");
-    celda.appendChild(document.createTextNode(persona.nombre))
-    fila.appendChild(celda);
-    fila.setAttribute("class", "apellido");
-    celda = document.createElement("td");
-    celda.appendChild(document.createTextNode(persona.apellido))
-    fila.appendChild(celda);
-    fila.setAttribute("class", "sexo");
-    celda = document.createElement("td");
-    celda.appendChild(document.createTextNode(persona.sexo));
-    fila.appendChild(celda);
-    fila.setAttribute("class", "edad");
-    celda = document.createElement("td");
-    celda.appendChild(document.createTextNode(persona.edad));
-    fila.appendChild(celda);
-    celda = document.createElement("td");
-    fila.addEventListener("dblclick", cargaFormulario);
+    if (tabla == null) {
+        tabla = document.createElement("table");
+        tabla.setAttribute("id", "tabla");
+        tabla.setAttribute("class", "grilla");
+        let contenedor = $("listado");
+        contenedor.appendChild(tabla);
 
-    tabla.appendChild(fila);
+        let fila = document.createElement("tr");
+        fila.setAttribute("id", "cabecera");
+
+        if ($("chk_nombre").checked == true) {
+            let auxNombre = document.createElement("th");
+            let txt = document.createTextNode("Nombre");
+            auxNombre.appendChild(txt);
+            fila.appendChild(auxNombre);
+        }
+
+        if ($("chk_apellido").checked == true) {
+            let auxApellido = document.createElement("th");
+            let txt = document.createTextNode("Apellido");
+            auxApellido.appendChild(txt);
+            fila.appendChild(auxApellido);
+        }
+
+        if ($("chk_sexo").checked == true) {
+            let auxSexo = document.createElement("th");
+            let txt = document.createTextNode("Sexo");
+            auxSexo.appendChild(txt);
+            fila.appendChild(auxSexo);
+        }
+
+        if ($("chk_edad").checked == true) {
+            let auxEdad = document.createElement("th");
+            let txt = document.createTextNode("Edad");
+            auxEdad.appendChild(txt);
+            fila.appendChild(auxEdad);
+        }
+
+        tabla.appendChild(fila);
+
+    }
+
+    personas.forEach((persona) => {
+        let fila = document.createElement("tr");
+        fila.setAttribute("id", persona.id);
+
+        if ($("chk_nombre").checked == true) {
+            let celda = document.createElement("td");
+            celda.appendChild(document.createTextNode(persona.nombre))
+            fila.appendChild(celda);
+        }
+
+        if ($("chk_apellido").checked == true) {
+            let celda = document.createElement("td");
+            celda.appendChild(document.createTextNode(persona.apellido))
+            fila.appendChild(celda);
+        }
+
+        if ($("chk_sexo").checked == true) {
+            let celda = document.createElement("td");
+            celda.appendChild(document.createTextNode(persona.sexo));
+            fila.appendChild(celda);
+        }
+
+        if ($("chk_edad").checked == true) {
+            let celda = document.createElement("td");
+            celda.appendChild(document.createTextNode(persona.edad));
+            fila.appendChild(celda);
+        }
+
+        fila.addEventListener("dblclick", cargaFormulario);
+
+        tabla.appendChild(fila);
+    });
+
+    $("listado").appendChild(tabla);
 
 }
 
-async function GetMaterias() {
+async function GetPersonas() {
     try {
         let respuesta = await fetch("http://localhost:3001/clientes", { method: 'GET', headers: { 'Content-Type': 'application/json' } });
 
         if (respuesta.status == 200 && respuesta.ok) {
-            respuesta.json().then(elemento => {
-                personas = elemento;
+            respuesta.json().then(elementos => {
+                personas = new Array();
+                TraerPersonas(elementos);
                 CargarTabla(personas);
             });
         }
@@ -52,10 +125,11 @@ async function GetMaterias() {
     }
 }
 
-function CargarTabla(personas) {
+function TraerPersonas(elementos) {
 
-    personas.forEach((item) => {
-        construirTabla(item);
+    elementos.forEach(item => {
+        let p = new Cliente(item.id, item.nombre, item.apellido, item.sexo, item.edad);
+        personas.push(p);
     })
 
 }
@@ -94,25 +168,29 @@ function cargarPersonasPorId(id) {
 function mayorId() {
 
     return personas.reduce((idMax, item) => {
-        if (item.id > idMax.edad) {
-            idMax.id = item.id;
-            return idMax;
+        if (item.id > idMax) {
+            //  idMax = item.id;
+            return item.id;;
         } else {
             return idMax;
         }
-    })
+    }, 0);
+
 };
+
 
 
 function agregarPersonasPorId(id) {
 
-    let nombre = $("txtNombre").value;
-    let apellido = $("txtApellido").value;
-    let edad = $("txtEdad").value;
-    let sexo = $("sexo").value;
+    if (ValidarCampos()) {
+        let nombre = $("txtNombre").value;
+        let apellido = $("txtApellido").value;
+        let edad = $("txtEdad").value;
+        let sexo = $("sexo").value;
 
-    let persona = new Cliente(id, nombre, apellido, sexo, edad);
-    personas.push(persona);
+        let persona = new Cliente(id, nombre, apellido, sexo, edad);
+        personas.push(persona);
+    }
 
 }
 
@@ -157,12 +235,25 @@ function generarJson(id) {
 
 }
 
+function crearPersonaPorId(id) {
 
+    let nombre = $("txtNombre").value;
+    let apellido = $("txtApellido").value;
+    let sexo = $("sexo").value;
+    let edad = $("txtEdad").value;
+
+    if (ValidarCampos()) {
+
+        let persona = new Cliente(id, nombre, apellido, sexo, edad);
+        return persona;
+    }
+
+}
 
 function EliminarFila() {
 
     let persona = jsonEliminar();
-    RemoverDelListado(persona.id);
+    RemoverDelListado(persona);
     eliminarElemento();
 }
 
@@ -191,9 +282,9 @@ function jsonEliminar() {
 
     let id = $("txtNombre").getAttribute("user");
 
-    let jsonMateria = { "id": id };
+    let json = { "id": id };
 
-    return jsonMateria;
+    return json;
 
 }
 
@@ -205,13 +296,31 @@ function eliminarElemento() {
 }
 
 
-function Filtrado(dato) {
+function FiltrarClientes() {
 
-    return personas.filter(function (item) {
-        return item.sexo == dato;
-    })
+    if ($("filtros").value == "0") {
+        return personas;
+    }
+
+    if ($("filtros").value == "1") {
+
+        return personas.filter(e => {
+            return e.sexo == "Male";
+        })
+    }
+
+    if ($("filtros").value == "2") {
+        return personas.filter(e => {
+            return e.sexo == "Female";
+        })
+    }
 
 };
+
+function filtrarListado() {
+    let listado = FiltrarClientes();
+    CargarTabla(listado);
+}
 
 function FallaPeticion(mensaje) {
     console.log(mensaje);
@@ -227,26 +336,37 @@ function limpiarTabla() {
 
 }
 
+function removerListado(nodo) {
+
+    while (nodo.firstChild) {
+        nodo.removeChild(nodo.firstChild);
+    }
+}
+
+
 function PromedioEdad() {
 
-    return (personas.reduce(function (total, item) {
+    let p = FiltrarClientes();
+    return (p.reduce(function (total, item) {
         return total += item.edad;
-    }, 0) / personas.length).toFixed(2);
+    }, 0) / p.length).toFixed(2);
 
 };
 
 window.addEventListener("load", () => {
 
-    GetMaterias(); //async funcion + fetch 
+    GetPersonas(); //async funcion + fetch 
 
     $("btnAgregar").addEventListener("click", (e) => {
 
-        let id = mayorId();
-        id++;
-        let persona = generarJson(id);
-        personas.push(persona);
-        limpiarTabla();
-        CargarTabla(personas);
+        if (ValidarCampos()) {
+            let id = mayorId();
+            console.log(id);
+            id++;
+            let persona = crearPersonaPorId(id);
+            personas.push(persona);
+            CargarTabla(personas);
+        }
 
     });
 
@@ -265,17 +385,15 @@ window.addEventListener("load", () => {
 
     $("filtros").addEventListener("click", () => {
 
-            limpiarTabla();
-            let listaAuxiliar;
-            listaAuxiliar = Filtrado($("filtros").value);
-            limpiarTabla();
-            if (listaAuxiliar != 0) {
-                CargarTabla(listaAuxiliar);
-            } else {
-                CargarTabla(personas);
-            }
-
+        let listaAuxiliar;
+        listaAuxiliar = FiltrarClientes();
+        limpiarTabla();
+        CargarTabla(listaAuxiliar);
     });
 
-});
+    $("chk_nombre").addEventListener("change", filtrarListado);
+    $("chk_apellido").addEventListener("change", filtrarListado);
+    $("chk_edad").addEventListener("change", filtrarListado);
+    $("chk_sexo").addEventListener("change", filtrarListado);
 
+});
