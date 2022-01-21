@@ -1,4 +1,4 @@
-# CristianBarrazaSPLaboratorioIII
+# Segundo Parcial de Laboratorio III (JavaScript,HTML,CSS)
 
 ABM de Personas
 
